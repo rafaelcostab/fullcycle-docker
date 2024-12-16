@@ -1,4 +1,4 @@
-# fullcycle-docker
+# Imersão Full Cycle
 Full Cycle Bootcamp, docker for devs, building a stack from scratch
 
 ### Basic commands
@@ -43,4 +43,43 @@ Adicionando o parâmetro -v criamos um volume, onde é criada uma pasta gerencia
 o parâmetro seguinte `$(pwd)/html:/usr/share/nginx/html` aponta que uma pasta do seu computador deve ser "espelhada" na pasta do nginx. Assim as alterções realizadas no arquivo refletirá no arquivo do container.
 ```docker
 docker run -p 8080:80 -v $(pwd)/html:/usr/share/nginx/html nginx
+```
+
+### Criando uma aplicação em NodeJS
+
+Cria o `package.json` básico e funcional para rodar o exemplo. 
+```sh
+npm init -y
+```
+
+Agora vamos instalar o Express que é um framework minimalista para NodeJS
+```sh
+npm install express
+```
+
+### Rodando com dockerfile
+
+Após criar o dockerfile com as instruções para gerar a imagem, basta buildar a imagem. O parâmetro `-t`server para nomear a imagem.
+```sh
+docker build -t nodeexemplo
+```
+
+rodar o comando para subir a aplicação.
+```sh
+docker run -p 3000:3000 nodeexemplo
+```
+
+Roda a aplicação criando montando um volume
+```sh
+docker run -p 3000:3000 -v $(pwd)/:/app nodeexemplo
+```
+
+Entra dentro de um container
+```sh
+docker exec -it ${containerid} sh  
+```
+
+Após entrar dentro do container podemos rodar a aplicação sem ter o node instalado na maquina, o mesmo está instalado no container
+```sh
+node index.js
 ```

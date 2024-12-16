@@ -1,0 +1,17 @@
+{
+  "name": "fullcycle-docker",
+  "version": "1.0.0",
+  "description": "Full Cycle Bootcamp, docker for devs, building a stack from scratch",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "i": "^0.3.7",
+    "mongoose": "^8.9.0"
+  }
+}
