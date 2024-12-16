@@ -83,3 +83,8 @@ Após entrar dentro do container podemos rodar a aplicação sem ter o node inst
 ```sh
 node index.js
 ```
+
+Entra em um container usando `componse`, devemos passar por parâmetro o nome do serviço, em nosso exemplo `nodeapp`
+```sh
+docker compose exec -it nodeapp sh
+```
