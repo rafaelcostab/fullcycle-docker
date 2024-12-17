@@ -1,95 +1,121 @@
 # Imersão Full Cycle
-Full Cycle Bootcamp, docker for devs, building a stack from scratch
+*Full Cycle Bootcamp - Docker for Developers: Construindo uma stack do zero*
 
-### Basic commands
+Exploraremos os principais conceitos e comandos para utilizar Docker no desenvolvimento de aplicações. Docker permite criar containers, que isolam ambientes e garantem a consistência entre desenvolvimento e produção.
 
-Mostra os containers que estão sendo executados
-```docker
-docker ps 
+Aqui, você aprenderá a rodar aplicações, configurar volumes e usar Docker Compose para gerenciar múltiplos serviços, além de criar uma aplicação Node.js utilizando um Dockerfile. O objetivo é oferecer uma base prática e clara para integrar Docker de forma eficiente
+
+## Comandos Básicos do Docker
+
+### Listar containers em execução
+Mostra todos os containers que estão atualmente em execução:
+```sh
+docker ps
 ```
+### Listar todos os containers
+Mostra todos os containers, incluindo os que foram finalizados:
 
-Mostra os containers que já tivemos
-```docker
+```sh
 docker ps -a
 ```
 
-Rodando nginx, nginx é um servidor web.
-```docker
+### Rodando o Nginx
+O Nginx é um servidor web. Para rodá-lo com o Docker, basta executar o comando:
+```sh
 docker run nginx
 ```
 
-Roda a aplicação publicando a porta
-```docker
+### Rodando o Nginx e publicando a porta
+Para rodar o Nginx e expor a porta 80 do container na porta 8080 da máquina local:
+```sh
 docker run -p 8080:80 nginx
 ```
 
-Fazendo request pra ver se o servidor web está rodando na porta
+### Verificando se o servidor web está rodando
+Use curl para verificar se o servidor está acessível na porta 8080:
 ```sh
 curl localhost:8080
 ```
 
-Executar comandos dentro do container
-```docker
-docker exec -it ${containerid}
+### Executando comandos dentro de um container
+Você pode executar comandos dentro de um container em execução utilizando o seguinte comando:
+```sh
+docker exec -it ${container_id} <comando>
 ```
 
-Entra dentro do container possibilitando rodar comandos
-```docker
-docker exec -it ${containerid} bash
+### Acessando o container via terminal
+Se você quiser acessar o terminal interativo do container, use o comando abaixo para entrar com o shell bash (ou sh, dependendo da imagem):
+```sh
+docker exec -it ${container_id} bash
 ```
-Observação: um container não deve ser utilizado como máquina virtual, pois ele não armazena estado por padrão, ou seja, tudo que for feito será perdido no momento que remover o container e criá-lo de novo.
+Observação: Containers não devem ser usados como máquinas virtuais. Por padrão, eles não armazenam estado. Ou seja, qualquer dado criado dentro de um container será perdido quando o container for removido e recriado.
 
-Adicionando o parâmetro -v criamos um volume, onde é criada uma pasta gerenciada pelo docker, onde tudo que eu gravar dentro dela não é perdido.   
-o parâmetro seguinte `$(pwd)/html:/usr/share/nginx/html` aponta que uma pasta do seu computador deve ser "espelhada" na pasta do nginx. Assim as alterções realizadas no arquivo refletirá no arquivo do container.
-```docker
+### Criando um volume persistente
+Adicionando o parâmetro -v, você pode criar um volume persistente que mantém os dados gravados dentro de uma pasta gerenciada pelo Docker. O exemplo abaixo cria um volume onde a pasta do seu computador ($(pwd)/html) é espelhada na pasta do Nginx (/usr/share/nginx/html), permitindo que as alterações feitas no arquivo na máquina local sejam refletidas no container.
+```sh
 docker run -p 8080:80 -v $(pwd)/html:/usr/share/nginx/html nginx
 ```
 
-### Criando uma aplicação em NodeJS
+## Criando uma aplicação Node.js com Docker
 
-Cria o `package.json` básico e funcional para rodar o exemplo. 
+### Iniciando um projeto Node.js
+Crie o arquivo package.json básico para o seu projeto Node.js:
 ```sh
 npm init -y
 ```
 
-Agora vamos instalar o Express que é um framework minimalista para NodeJS
+### Instalando o Express
+Instale o Express, um framework minimalista para Node.js:
 ```sh
 npm install express
 ```
 
-### Rodando com dockerfile
-
-Após criar o dockerfile com as instruções para gerar a imagem, basta buildar a imagem. O parâmetro `-t`server para nomear a imagem.
+## Rodando a aplicação com Dockerfile
+### Criando um Dockerfile
+Depois de criar o Dockerfile com as instruções para gerar a imagem, você pode construir a imagem Docker com o comando abaixo. O parâmetro `-t` serve para nomear a imagem.
 ```sh
-docker build -t nodeexemplo
+docker build -t nodeexemplo .
 ```
 
-rodar o comando para subir a aplicação.
+### Rodando a aplicação com Docker
+Para rodar a aplicação, use o seguinte comando, que mapeia a porta 3000 do container para a porta 3000 da máquina local:
 ```sh
 docker run -p 3000:3000 nodeexemplo
 ```
 
-Roda a aplicação criando montando um volume
+### Rodando a aplicação com volume
+Para rodar a aplicação e montar um volume que sincronize o código entre o container e sua máquina local, utilize o comando abaixo:
 ```sh
 docker run -p 3000:3000 -v $(pwd)/:/app nodeexemplo
 ```
 
-Entra dentro de um container
+### Acessando o container e rodando a aplicação
+Caso você queira acessar o container e rodar a aplicação diretamente no ambiente do container, use o comando abaixo para entrar no container:
 ```sh
-docker exec -it ${containerid} sh  
+docker exec -it ${container_id} sh
 ```
-
-Após entrar dentro do container podemos rodar a aplicação sem ter o node instalado na maquina, o mesmo está instalado no container
+Após entrar no container, você pode rodar a aplicação sem ter o Node.js instalado na máquina local, pois o Node.js está instalado dentro do container:
 ```sh
 node index.js
 ```
 
-Cria os containes com base no arquivo docker-compose.yaml
+## Usando Docker Compose
+### Subindo containers com Docker Compose
+Cria e inicia os containers definidos no arquivo `docker-compose.yaml`:
 ```sh
 docker compose up -d
-````
+```
 
-Entra em um container usando `componse`, devemos passar por parâmetro o nome do serviço, em nosso exemplo `nodeapp`
+### Acessando um container via Docker Compose
+Entra no shell de um container gerenciado pelo Docker Compose, passando o nome do serviço. No exemplo, o nome do serviço é nodeapp:
 ```sh
 docker compose exec -it nodeapp sh
 ```
+
+## Considerações Finais
+
+Ao longo desta documentação, abordamos desde os conceitos e comandos básicos do Docker até a criação de uma aplicação Node.js utilizando Docker e Docker Compose. O uso de containers facilita a criação de ambientes isolados e consistentes, o que simplifica tanto o desenvolvimento quanto o processo de implantação.
+
+A prática com volumes, execução de comandos dentro de containers e o uso de Docker Compose para orquestrar múltiplos serviços são ferramentas poderosas que ajudam a aumentar a produtividade, garantir a portabilidade do software e reduzir erros em ambientes de produção.
+
+Com esses conhecimentos, você está pronto para aplicar o Docker de maneira eficiente nos seus projetos, aproveitando seus benefícios para criar aplicações mais robustas e fáceis de manter.
