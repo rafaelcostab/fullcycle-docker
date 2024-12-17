@@ -1,5 +1,5 @@
 # Imersão Full Cycle
-*Full Cycle Bootcamp - Docker for Developers: Construindo uma stack do zero*
+*[Docker for Developers: Construindo uma stack do zero](https://www.youtube.com/watch?v=SUyycXw4jTg&t=3044s)*
 
 Exploraremos os principais conceitos e comandos para utilizar Docker no desenvolvimento de aplicações. Docker permite criar containers, que isolam ambientes e garantem a consistência entre desenvolvimento e produção.
 
